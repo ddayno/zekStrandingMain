@@ -204,10 +204,13 @@ MonoBehaviour:
   enemyRigidX: {fileID: 2015130603549693771}
   enemyTransformX: {fileID: 6700739102967721737}
   playerTransformX: {fileID: 0}
+  isPlayerInsideX: 0
   isWalking: 0
-  stepX: 10
+  isRunning: 0
+  stepX: 3
   patrolSpeedX: 1
   patrolTimerX: 7
+  spriteRenderer: {fileID: 0}
 --- !u!1 &3118674766789578635
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +238,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.3518, y: 0.0312, z: 0}
-  m_LocalScale: {x: 1.0374, y: 1.0624, z: 1}
+  m_LocalScale: {x: 1.0373999, y: 1.0623999, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7410405475321145916}
@@ -270,7 +273,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &3637241091679876759
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,5 +919,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tDownButton: {fileID: 8419113042872487978}
+  player: {fileID: 0}
   rbPlayer: {fileID: 0}
   rbEnemy: {fileID: 2015130603549693771}
+  slideer: {fileID: 0}
+  enemyReflex: 0
+  slider: {fileID: 0}
+  tDownBarDecrease: 5
+  tDownBarIncrease: 2
+  tDonBarDecrease: 0
+  slidingz: {fileID: 0}
+  enemyObj: {fileID: 0}
+  fainted: {fileID: 0}
+  active: {fileID: 0}

@@ -12,6 +12,9 @@ public class PlayerMovement : MonoBehaviour
     public float WalkingSpeed = 850;
     public float RunningSpeed = 1125;
     private float Speed;
+    public bool isWalking;
+    public SpriteRenderer spriteRenderer;
+
 
     [SerializeField]
     public bool isRunning = false;
@@ -47,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (InputMove)
         {
+            Flipper();
             // Gets movement input
             GetMovementInput();
 
@@ -75,17 +79,24 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleRunning()
     {
-        
+
         
         if (Input.GetKey(KeyCode.LeftShift) && stamina > onRunStaminaLost)
         {
             isRunning = true;
+            isWalking = false;
             Speed = RunningSpeed;
         }
-        else
+        else 
         {
             isRunning = false;
+            isWalking = true;
             Speed = WalkingSpeed;
+        }
+        if (rb.linearVelocityX==0&&rb.linearVelocityY==0 &&!isDashing)
+        {
+            isRunning = false;
+            isWalking = false;
         }
         
         // Only update activeSpeed if the player isnt dashing
@@ -185,7 +196,17 @@ public class PlayerMovement : MonoBehaviour
     {
         InputMove = true;
     }
-
+    void Flipper()
+    {
+        if (rb.linearVelocityX > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (rb.linearVelocityX < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+    }
 
 
 

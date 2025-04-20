@@ -2,70 +2,64 @@ using UnityEngine;
 
 public class EnemyMovementY : MonoBehaviour
 {
+    public Rigidbody2D enemyRigidY;
+    public Transform enemyTransformY;
+    public Transform playerTransformY;
 
-    public Rigidbody2D enemyRigid;
-    public Transform enemyTransform;
-    public Transform playerTransform;
+    private bool isPlayerInsideY = false;
+    public float stepY = 10f;
+    public float patrolSpeedY = 1f;
+    public float patrolTimerY = 7f;
+    private float patrolResetY;
+    private int patrolDirectionY = 1;
 
-    private bool isPlayerInside = false;
-    public float step = 10f;
-    public float patrolSpeed = 1f;
-    public float patrolTimer = 7f;
-    private float patrolReset;
     private void Start()
     {
-        enemyRigid.linearVelocityY = patrolSpeed;
-        patrolReset = patrolTimer;
+        enemyRigidY.linearVelocityY = patrolSpeedY * patrolDirectionY;
+        patrolResetY = patrolTimerY;
     }
+
     private void Update()
     {
-
-        if (isPlayerInside)
+        if (isPlayerInsideY)
         {
-            Vector2 distance = playerTransform.position - enemyTransform.position;
-            float angleRad = Mathf.Atan2(distance.y, distance.x);
-            float angle = (180 / Mathf.PI) * angleRad;
-            enemyRigid.rotation = angle;
-            enemyTransform.position = Vector2.MoveTowards(enemyTransform.position, playerTransform.position, step * Time.deltaTime);
-
+            Vector2 distance = playerTransformY.position - enemyTransformY.position;
+            float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
+            enemyRigidY.rotation = angle;
+            enemyTransformY.position = Vector2.MoveTowards(enemyTransformY.position, playerTransformY.position, stepY * Time.deltaTime);
         }
-        if (!isPlayerInside)
+        else
         {
-            if (patrolReset >= 0)
+            patrolResetY -= Time.deltaTime;
+
+            if (patrolResetY <= 0)
             {
-                patrolReset -= Time.deltaTime;
-                if (patrolReset <= 0)
-                {
-                    enemyRigid.linearVelocityY *= -1;
-                    patrolReset = patrolTimer;
-                }
+                patrolDirectionY *= -1;
+                patrolResetY = patrolTimerY;
             }
-            if (enemyRigid.linearVelocityY < 0)
-            {
-                enemyRigid.rotation = 270;
-            }
-            if (enemyRigid.linearVelocityY > 0)
-            {
-                enemyRigid.rotation = 90;
-            }
+
+            enemyRigidY.linearVelocityY = patrolSpeedY * patrolDirectionY;
+
+            // Flip GameObject rotation only on X-axis
+            enemyTransformY.rotation = Quaternion.Euler(patrolDirectionY == 1 ? 0f : 180f, 0f, 0f);
+
+            Debug.Log("Enemy Y position: " + transform.position + " | Direction: " + patrolDirectionY);
         }
     }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
-
         if (collision.CompareTag("Player"))
         {
-
-            isPlayerInside = true;
+            isPlayerInsideY = true;
         }
-
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            isPlayerInside = false;
-
+            isPlayerInsideY = false;
         }
     }
 }
